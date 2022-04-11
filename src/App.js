@@ -19,13 +19,15 @@ function App() {
 
     const onPress = (e) => {
         if (e.key === "Enter") {
-        setUserInput(e.target.value);
+        setLoading("Loading...");
+        setWordsList("");
+        getRhymeData(userInput);
         }
     }
 
     const getRhymeData = (input) => {
 
-        setLoading("Loading!!!");
+        // setLoading("Loading!!!");
         setRhyme(true);
         setSimilar(false);
         fetch(`https://api.datamuse.com/words?${(new URLSearchParams({'rel_rhy': input})).toString()}`)
@@ -36,7 +38,7 @@ function App() {
 
     const getSimilarData = (input) => {
 
-        setLoading("Loading!!!");
+        // setLoading("Loading!!!");
         setSimilar(true);
         setRhyme(false)
         fetch(`https://api.datamuse.com/words?${(new URLSearchParams({'ml': input})).toString()}`)
@@ -61,7 +63,9 @@ function App() {
 
 
   return (
+
     <main className="container">
+        <div>https://github.com/saumyabaheti/homework6_579/tree/main</div>
     <h1 className="row">Rhyme Finder (579 Problem Set 6)</h1>
     <div className="row">
         <SavedWords saveList={savedWords}></SavedWords>
@@ -69,8 +73,8 @@ function App() {
     <div className="row">
         <div className="input-group col">
             <input className="form-control" type="text" placeholder="Enter a word" id="word_input" value={userInput} onChange={handleChange} onKeyDown={onPress}/>  
-            <button onClick={() => getRhymeData(userInput)}  id="show_rhymes" type="button" className="btn btn-primary">Show rhyming words</button>  
-            <button onClick={() => getSimilarData(userInput)} id="show_synonyms" type="button" className="btn btn-secondary">Show synonyms</button>
+            <button onClick={() => {setLoading("Loading...");setWordsList("");getRhymeData(userInput)}} id="show_rhymes" type="button" className="btn btn-primary">Show rhyming words</button>  
+            <button onClick={() => {setLoading("Loading...");setWordsList("");getSimilarData(userInput)}} id="show_synonyms" type="button" className="btn btn-secondary">Show synonyms</button>
         </div>
     </div>
     <GenerateData data={wordsList} input={userInput} load={loading} rhymingStatus={rhyme} similarStatus={similar} setSaveWord={setArray} setLoading={setLoad} savedWordsList={savedWords}></GenerateData>
